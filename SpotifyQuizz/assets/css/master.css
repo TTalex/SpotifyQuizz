@@ -35,3 +35,35 @@ button {
     bottom: 0px;
     font-family: "Roboto";
 }
+#volumeslider {
+	width: 350px;
+	height: 20px;
+	position: relative;
+	margin: 0 auto;
+}
+#volumeslider i {
+    position: absolute;
+    margin-top: -6px;
+    color: #666;
+}
+
+#volumeslider i.fa-volume-down {
+    margin-left: -8px;
+}
+
+#volumeslider i.fa-volume-up {
+    margin-right: -8px;
+    right: 0;
+}
+#volumeslider #volume {
+	position: absolute;
+	left: 24px;
+	margin: 0 auto;
+	height: 13px;
+    margin-top: -3px;
+	width: 300px;
+	background: #555;
+	border-radius: 15px;
+
+
+}

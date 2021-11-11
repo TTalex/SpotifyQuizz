@@ -4,13 +4,8 @@
     <img class="mx-auto" src="/SpotifyQuizz/assets/img/logo.png" style="height: 150px;"/>
 </div>
 <div class="container" style="height: 500px;">
-
-
-    <div class="row col-xs-12" ng-show="needs_spotify_pairing">
-        <button class="btn-lg btn-success mx-auto" ng-click="login()">Premièrement, se login avec Spotify</button>
-    </div>
-
-    <form ng-hide="needs_spotify_pairing">
+    <h1>Mode artiste</h1>
+    <form>
         <div class="row col-12">
             <div class="form-group col-6">
                 <label for="Artiste">Artiste</label>
@@ -34,4 +29,7 @@
     <div class="alert alert-danger" ng-show="message_failure">{{message_failure}}</div>
     <div class="alert alert-info" ng-show="waiting">{{waiting}}</div>
 
+</div>
+<div class="col-12">
+    <volumeslider setvolume="setVolume"></volumeslider>
 </div>

@@ -12,6 +12,8 @@
       } else if (hash) {
         var token = window.location.hash.split('&')[0].split('=')[1];
         localStorage.setItem('spotify-token', token);
+        var expirein = window.location.hash.split('&')[2].split('=')[1];
+        localStorage.setItem('spotify-expiration', Date.now() + parseInt(expirein) * 1000);
       }
     }
   </script>

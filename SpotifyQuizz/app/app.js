@@ -4,6 +4,10 @@ app.config(function ($locationProvider, $routeProvider) {
     //$locationProvider.html5Mode(true);
     $routeProvider
     .when('/', {
+        controller: 'LandingController',
+        templateUrl: 'app/views/landing.view.html'
+    })
+    .when('/artistmode', {
         controller: 'ArtistModeController',
         templateUrl: 'app/views/artistmode.view.html'
     })

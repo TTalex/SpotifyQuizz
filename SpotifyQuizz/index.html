@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/SpotifyQuizz/assets/css/master.css">
 
+    <script src="https://use.fontawesome.com/ba2965ec02.js"></script>
+
     <!-- Angular -->
     <script src="/SpotifyQuizz/assets/lib/angular/angular.min.js" charset="utf-8"></script>
 
@@ -27,9 +29,12 @@
     <script src="/SpotifyQuizz/app/app.js" charset="utf-8"></script>
 
     <!-- Controllers -->
+    <script src="/SpotifyQuizz/app/controllers/landing.controller.js" charset="utf-8"></script>
     <script src="/SpotifyQuizz/app/controllers/artistmode.controller.js" charset="utf-8"></script>
     <script src="/SpotifyQuizz/app/controllers/categorymode.controller.js" charset="utf-8"></script>
 
+    <!-- Directives -->
+    <script src="/SpotifyQuizz/app/directives/volumeslider.directive.js" charset="utf-8"></script>
     <!-- Services -->
     <script src="/SpotifyQuizz/app/services/angularspotify.service.js" charset="utf-8"></script>
 
@@ -41,7 +46,7 @@
         <div style="text-align: center; padding-top: 23px;">
             <h3>Modes de jeu</h3>
             <div>
-                <a href="/SpotifyQuizz">Mode artiste</a>
+                <a href="#/artistmode">Mode artiste</a>
             </div>
             <div class="">
                 <a href="#/categorymode">Mode categorie</a>

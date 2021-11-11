@@ -1,29 +1,51 @@
 <audio id="audioelement" ng-src="{{preview_url}}">
 </audio>
-<h1>Configuration</h1>
-<button ng-click="login()">Login with Spotify</button>
-<div>Nombre de secondes: <input type="number" ng-model="sample_time" min="0" max="30"/></div>
-<div ng-show="categories">
-    <h3>Categories</h3>
-    <button ng-repeat="c in categories" type="button" name="button" ng-click="selectcategory(c)">{{c.name}}</button>
+<div class="row col-12" style="margin-top: 50px;">
+    <img class="mx-auto" src="/SpotifyQuizz/assets/img/logo.png" style="height: 150px;"/>
 </div>
-<div ng-show="playlists">
-    <h3>Playlists</h3>
-    <button ng-repeat="p in playlists" type="button" name="button" ng-click="selectplaylist(p)">{{p.name}}</button>
+<div class="container" style="min-height: 500px;">
+    <h1>Mode categorie</h1>
+    <form>
+        <div class="row col-12">
+            <div class="form-group col-12">
+                <label for="secs">Nombre de secondes</label>
+                <input type="number" class="form-control" id="secs" ng-model="sample_time" min="0" max="30">
+            </div>
+
+        </div>
+        <div class="row col-xs-12" ng-hide="categories">
+            <button type="submit" class="btn-lg btn-success mx-auto" ng-click="start()">C'est parti !</button>
+        </div>
+    </form>
+    <div ng-show="categories" class="col-12" style="margin-top: 10px">
+        <h3>Categories</h3>
+        <button ng-repeat="c in categories" class="btn-sm btn-secondary mx-auto" ng-class="{'btn-info': selected_category == c.id}" type="button" name="button" ng-click="selectcategory(c)">{{c.name}}</button>
+    </div>
+    <div ng-show="playlists" class="col-12" style="margin-top: 10px">
+        <h3>Playlists</h3>
+        <button ng-repeat="p in playlists" class="btn-sm btn-secondary mx-auto" ng-class="{'btn-info': selected_playlist == p.id}" type="button" name="button" ng-click="selectplaylist(p)">{{p.name}}</button>
+    </div>
+    <div ng-show="filtered_tracks" class="col-12" style="margin-top: 10px">
+        <div>Cette playliste contient {{filtered_tracks.length}} musiques.</div>
+        <button class="btn-lg btn-success" type="button" name="button" ng-click="generate_tracks(true)">C'est parti !</button>
+    </div>
+    <div ng-show="tracks" class="col-12" style="margin-top: 10px; margin-bottom: 10px;">
+        <h3>Quelle musique ?</h3>
+        <button class="btn-sm btn-success" ng-repeat="t in tracks track by $index" type="button" name="button" ng-click="choose(t)" style="display:block">[{{$index + 1}}] {{t.artists[0].name}} - {{t.name}}</button>
+    </div>
+    <div ng-show="filtered_tracks" class="col-12" style="height: 250px">
+        <div class="alert alert-success" ng-show="message_success">{{message_success}}</div>
+        <div class="alert alert-danger" ng-show="message_failure">{{message_failure}}</div>
+        <div class="alert alert-info" ng-show="waiting">{{waiting}}</div>
+        <div ng-show="tracks">Score: {{score}}, musique {{track_counter}}/{{MAX_TRACKS}}</div>
+        <table ng-show="responses">
+            <tr>
+                <td ng-repeat="r in responses track by $index" ng-class="{greenbg: r, redbg: !r}" style="width: 20px; height: 20px"><span ng-show="r">+{{r | number:0}}</span><span ng-hide="r">+0</span></td>
+            </tr>
+        </table>
+    </div>
 </div>
-<div ng-show="filtered_tracks">
-    <div>Cette playliste contient {{filtered_tracks.length}} musiques.</div>
-    <button type="button" name="button" ng-click="generate_tracks(true)">C'est parti !</button>
+
+<div class="col-12">
+    <volumeslider setvolume="setVolume"></volumeslider>
 </div>
-<div ng-show="tracks">
-    <h3>Quelle musique ?</h3>
-    <button ng-repeat="t in tracks track by $index" type="button" name="button" ng-click="choose(t)" style="display:block">[{{$index + 1}}] {{t.artists[0].name}} - {{t.name}}</button>
-</div>
-<div>{{message}}</div>
-<div>{{waiting}}</div>
-<div ng-show="tracks">Score: {{score}}, musique {{track_counter}}/{{MAX_TRACKS}}</div>
-<table ng-show="responses">
-    <tr>
-        <td ng-repeat="r in responses track by $index" ng-class="{greenbg: r, redbg: !r}" style="width: 20px; height: 20px"><span ng-show="r">+{{r | number:0}}</span><span ng-hide="r">+0</span></td>
-    </tr>
-</table>
