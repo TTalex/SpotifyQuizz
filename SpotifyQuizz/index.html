@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="SpotifyQuizz">
+  <head>
+    <base href="/SpotifyQuizz/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="TTalex">
+    <title>SpotifyQuizz</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/SpotifyQuizz/assets/css/master.css">
+
+    <!-- Angular -->
+    <script src="/SpotifyQuizz/assets/lib/angular/angular.min.js" charset="utf-8"></script>
+
+    <!-- Angular routing -->
+    <script src="/SpotifyQuizz/assets/lib/angular/angular-route.min.js" charset="utf-8"></script>
+
+    <!-- Cool libs -->
+    <script src="/SpotifyQuizz/assets/lib/fuzzyset.js" charset="utf-8"></script>
+    <script src="/SpotifyQuizz/assets/lib/utils.js" charset="utf-8"></script>
+
+    <!-- App -->
+    <script src="/SpotifyQuizz/app/app.js" charset="utf-8"></script>
+
+    <!-- Controllers -->
+    <script src="/SpotifyQuizz/app/controllers/artistmode.controller.js" charset="utf-8"></script>
+    <script src="/SpotifyQuizz/app/controllers/categorymode.controller.js" charset="utf-8"></script>
+
+    <!-- Services -->
+    <script src="/SpotifyQuizz/app/services/angularspotify.service.js" charset="utf-8"></script>
+
+
+  </head>
+  <body>
+    <div ng-view></div>
+    <footer class="footer">
+        <div style="text-align: center; padding-top: 23px;">
+            <h3>Modes de jeu</h3>
+            <div>
+                <a href="/SpotifyQuizz">Mode artiste</a>
+            </div>
+            <div class="">
+                <a href="#/categorymode">Mode categorie</a>
+            </div>
+        </div>
+    </footer>
+  </body>
+</html>

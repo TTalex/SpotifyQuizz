@@ -1,0 +1,37 @@
+<audio id="audioelement" ng-src="{{preview_url}}">
+</audio>
+<div class="row col-12" style="margin-top: 50px; margin-bottom: 50px;">
+    <img class="mx-auto" src="/SpotifyQuizz/assets/img/logo.png" style="height: 150px;"/>
+</div>
+<div class="container" style="height: 500px;">
+
+
+    <div class="row col-xs-12" ng-show="needs_spotify_pairing">
+        <button class="btn-lg btn-success mx-auto" ng-click="login()">Premièrement, se login avec Spotify</button>
+    </div>
+
+    <form ng-hide="needs_spotify_pairing">
+        <div class="row col-12">
+            <div class="form-group col-6">
+                <label for="Artiste">Artiste</label>
+                <input type="text" class="form-control" id="Artiste"  ng-model="artist">
+            </div>
+            <div class="form-group col-6">
+                <label for="secs">Nombre de secondes</label>
+                <input type="number" class="form-control" id="secs" ng-model="sample_time" min="0" max="30">
+            </div>
+
+        </div>
+        <div class="row col-xs-12">
+            <button type="submit" class="btn-lg btn-success mx-auto" ng-click="start()">C'est parti !</button>
+        </div>
+    </form>
+
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <button class="btn-sm btn-success" ng-repeat="t in tracks" type="button" name="button" ng-click="choose(t)" style="margin-right: 5px;">{{t}}</button>
+    </div>
+    <div class="alert alert-success" ng-show="message_success">{{message_success}}</div>
+    <div class="alert alert-danger" ng-show="message_failure">{{message_failure}}</div>
+    <div class="alert alert-info" ng-show="waiting">{{waiting}}</div>
+
+</div>
