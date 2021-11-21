@@ -1,5 +1,5 @@
 # SpotifyQuizz
-![SpotifyQuizz](SpotifyQuizz/assets/img/logo.png)
+![SpotifyQuizz](frontend/assets/img/logo.png)
 
 SpotifyQuizz is a song guessing game using Spotify and Angularjs.
 
