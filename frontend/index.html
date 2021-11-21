@@ -24,6 +24,8 @@
     <!-- Cool libs -->
     <script src="/assets/lib/fuzzyset.js" charset="utf-8"></script>
     <script src="/assets/lib/utils.js" charset="utf-8"></script>
+    <script src="/assets/lib/qrcode.js" charset="utf-8"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <!-- App -->
     <script src="/app/app.js" charset="utf-8"></script>
@@ -32,6 +34,8 @@
     <script src="/app/controllers/landing.controller.js" charset="utf-8"></script>
     <script src="/app/controllers/artistmode.controller.js" charset="utf-8"></script>
     <script src="/app/controllers/categorymode.controller.js" charset="utf-8"></script>
+    <script src="/app/controllers/multiplayerlobby.controller.js" charset="utf-8"></script>
+    <script src="/app/controllers/multiplayerremote.controller.js" charset="utf-8"></script>
 
     <!-- Directives -->
     <script src="/app/directives/volumeslider.directive.js" charset="utf-8"></script>
@@ -42,16 +46,5 @@
   </head>
   <body>
     <div ng-view></div>
-    <footer class="footer">
-        <div style="text-align: center; padding-top: 23px;">
-            <h3>Modes de jeu</h3>
-            <div>
-                <a href="#/artistmode">Mode artiste</a>
-            </div>
-            <div class="">
-                <a href="#/categorymode">Mode categorie</a>
-            </div>
-        </div>
-    </footer>
   </body>
 </html>

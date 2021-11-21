@@ -3,7 +3,7 @@
 
 SpotifyQuizz is a song guessing game using Spotify and Angularjs.
 
-It has two game modes: **Artist mode** and **Category mode**. Work is in progress to add a local **Mutiplayer mode**.
+It has three game modes: **Artist mode**, **Category mode** and **Mutiplayer category mode**.
 
 ### Artist mode
 In the artist mode, the player choses an artist, and ten of its songs are selected.
@@ -13,7 +13,6 @@ Each round, a sample of one of the songs is played for a given duration, the pla
 The goal is to reach a duration of 1 second and correctly guess the song
 
 ### Category mode
-> *UI is a work in progress*
 
 In the category mode, the player choses a playlist from which songs are randomly picked.
 

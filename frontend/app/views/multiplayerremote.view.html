@@ -1,0 +1,15 @@
+<div>
+    Salle #{{lobbyId}}, player #{{playerId}}
+</div>
+<div class="col">
+    <button
+        class="btn-lg col"
+        type="button"
+        ng-repeat="t in tracks track by $index"
+        ng-click="playerGuess($index)"
+        style="height: 20vh; margin-top: 1vh"
+        ng-class="t.class"
+    >
+        [{{$index + 1}}] <img ng-src="{{t.album.images[0].url}}" alt="albumcover" style="height: 50%"> {{t.artists[0].name}} - {{t.name}}
+    </button>
+</div>

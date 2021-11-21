@@ -15,6 +15,14 @@ app.config(function ($locationProvider, $routeProvider) {
         controller: 'CategoryModeController',
         templateUrl: 'app/views/categorymode.view.html'
     })
+    .when('/multiplayerlobby', {
+        controller: 'MultiplayerLobbyController',
+        templateUrl: 'app/views/multiplayerlobby.view.html'
+    })
+    .when('/multiplayerremote', {
+        controller: 'MultiplayerRemoteController',
+        templateUrl: 'app/views/multiplayerremote.view.html'
+    })
     .otherwise({
         redirectTo: '/'
     });

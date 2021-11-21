@@ -1,0 +1,80 @@
+<audio id="audioelement" ng-src="{{preview_url}}">
+</audio>
+<div class="row col-12" style="margin-top: 50px;">
+    <img class="mx-auto" src="/assets/img/logo.png" style="height: 150px;"/>
+</div>
+<div ng-show="!gameStarted">
+    <div class="container" style="min-height: 500px;">
+        <h1>Multijoueur</h1>
+        <div>
+            Salle #{{lobbyId}}, {{nbPlayers}} joueurs, scanne le QR code pour rejoindre la partie.
+        </div>
+        <div id="qrcode" style="margin: 10px"></div>
+        <div ng-show="!nbPlayers">
+            En attente de joueurs...
+        </div>
+        <button ng-show="nbPlayers" class="btn-lg btn-success" type="button" name="button" ng-click="gameStarted = true">Démarrer</button>
+    </div>
+</div>
+
+<div ng-show="gameStarted">
+    <div class="container" style="min-height: 500px;">
+        <h1>Multijoueur</h1>
+        <form>
+            <div class="row col-12">
+                <div class="form-group col-12">
+                    <label for="secs">Nombre de secondes</label>
+                    <input type="number" class="form-control" id="secs" ng-model="sample_time" min="0" max="30">
+                </div>
+
+            </div>
+            <div class="row col-xs-12" ng-hide="categories">
+                <button type="submit" class="btn-lg btn-success mx-auto" ng-click="start()">C'est parti !</button>
+            </div>
+        </form>
+        <div ng-show="categories" class="col-12" style="margin-top: 10px">
+            <h3>Categories</h3>
+            <button ng-repeat="c in categories" class="btn-sm btn-secondary mx-auto" ng-class="{'btn-info': selected_category == c.id}" type="button" name="button" ng-click="selectcategory(c)">{{c.name}}</button>
+        </div>
+        <div ng-show="playlists" class="col-12" style="margin-top: 10px">
+            <h3>Playlists</h3>
+            <button ng-repeat="p in playlists" class="btn-sm btn-secondary mx-auto" ng-class="{'btn-info': selected_playlist == p.id}" type="button" name="button" ng-click="selectplaylist(p)">{{p.name}}</button>
+        </div>
+        <div ng-show="filtered_tracks" class="col-12" style="margin-top: 10px">
+            <div>Cette playliste contient {{filtered_tracks.length}} musiques.</div>
+            <button class="btn-lg btn-success" type="button" name="button" ng-click="generate_tracks(true)">C'est parti !</button>
+        </div>
+        <div ng-show="tracks" class="col-12" style="margin-top: 10px; margin-bottom: 10px;">
+            <h3>Quelle musique ?</h3>
+            <button class="btn-sm btn-success" ng-repeat="t in tracks track by $index" type="button" name="button" style="display:block">[{{$index + 1}}] {{t.artists[0].name}} - {{t.name}}</button>
+        </div>
+        <div ng-show="filtered_tracks" class="col-12" style="height: 250px">
+            <div class="alert alert-success" ng-show="message_success">{{message_success}}</div>
+            <div class="alert alert-danger" ng-show="message_failure">{{message_failure}}</div>
+            <div class="alert alert-info" ng-show="waiting">{{waiting}}</div>
+            <div ng-show="tracks">Musique {{track_counter}}/{{MAX_TRACKS}}</div>
+            <table ng-show="responses">
+                <tr>
+                    <th style="width: 100px">Joueur</th>
+                    <th style="width: 100px">Score</th>
+                    <th>Réponses</th>
+                </tr>
+                <tr ng-repeat="playerresponses in responses track by $index">
+                    <td>{{$index}}</td>
+                    <td>{{scores[$index] | number:2}}</td>
+                    <td>
+                        <div ng-repeat="r in playerresponses track by $index" ng-class="{greenbg: r, redbg: !r}" style="display:inline-block; width: 40px; text-align:center">
+                            <span ng-show="r">+{{r | number:0}}</span>
+                            <span ng-hide="r">+0</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <volumeslider setvolume="setVolume"></volumeslider>
+    </div>
+
+</div>
