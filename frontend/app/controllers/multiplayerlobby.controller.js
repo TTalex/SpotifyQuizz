@@ -9,13 +9,13 @@ app.controller('MultiplayerLobbyController',
             $scope.$apply();
             var qrcode = new QRCode(
                 document.getElementById("qrcode"),
-                "http://192.168.1.34:8000/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers
+                $window.location.host + "/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers
             );
             socket.on("playerJoin", (data) => {
                 console.log("playerJoin", data.playerId);
                 $scope.nbPlayers += 1;
                 $scope.$apply();
-                qrcode.makeCode("http://192.168.1.34:8000/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers);
+                qrcode.makeCode($window.location.host + "/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers);
             });
             socket.on("playerGuess", (data) => {
                 console.log("playerGuess", data.playerId, data.guessId);
