@@ -8,11 +8,10 @@ function ($scope, Spotify, $sce, $timeout, $window) {
     var pausetimeout;
     var spotifyToken = $window.localStorage.getItem("spotify-token");
     var spotifyExpiration = parseInt($window.localStorage.getItem("spotify-expiration") || 0);
-    console.log(new Date(spotifyExpiration))
     if (spotifyToken && (spotifyExpiration > Date.now() + 10 * 60 * 1000)) {
         Spotify.setAuthToken(spotifyToken);
     } else {
-        $window.location.href = "/SpotifyQuizz/";
+        $window.location.href = "/";
     }
     function play_track(track) {
         console.log(track);
@@ -41,7 +40,6 @@ function ($scope, Spotify, $sce, $timeout, $window) {
             Spotify.getArtistTopTracks(artist_uri, 'FR').then(function(data) {
                 console.log(data);
                 var tracks = data.data.tracks;
-                $scope.originaltracks = tracks;
                 $scope.filtered_tracks = tracks.filter(function (elt) {
                     return elt.preview_url;
                 });

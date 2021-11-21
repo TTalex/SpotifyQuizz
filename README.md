@@ -25,9 +25,14 @@ The goal is to get as many points as possible at the end of the ten songs. With 
 [Demo](http://TTalex.hopto.org/SpotifyQuizz)
 
 ## Self deployment
-First, be sure to edit `SpotifyQuizz/app/app.js` with your Spotify app ID, and configure a valid callback URI
+First, be sure to edit `frontend/app/app.js` with your Spotify app ID, and configure a valid callback URI
 
-Then, this app can be run locally with a simple web server
+Then, install the dependencies
 ```
-python -m SimpleHTTPServer
+npm install
+```
+
+And run, the server runs on port 8000 by default
+```
+node server.js
 ```

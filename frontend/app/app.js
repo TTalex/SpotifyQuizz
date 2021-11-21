@@ -22,6 +22,6 @@ app.config(function ($locationProvider, $routeProvider) {
 
 app.config(function (SpotifyProvider) {
     SpotifyProvider.setClientId('d778ed85a6e84c9bb4372929228be62a');
-    SpotifyProvider.setRedirectUri('http://ttalex.hopto.org/SpotifyQuizz/callback.html');
+    SpotifyProvider.setRedirectUri('http://ttalex.hopto.org/callback.html');
     SpotifyProvider.setScope('');
 });

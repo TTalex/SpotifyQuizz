@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="SpotifyQuizz">
+  <head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="TTalex">
+    <title>SpotifyQuizz</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/master.css">
+
+    <script src="https://use.fontawesome.com/ba2965ec02.js"></script>
+
+    <!-- Angular -->
+    <script src="/assets/lib/angular/angular.min.js" charset="utf-8"></script>
+
+    <!-- Angular routing -->
+    <script src="/assets/lib/angular/angular-route.min.js" charset="utf-8"></script>
+
+    <!-- Cool libs -->
+    <script src="/assets/lib/fuzzyset.js" charset="utf-8"></script>
+    <script src="/assets/lib/utils.js" charset="utf-8"></script>
+
+    <!-- App -->
+    <script src="/app/app.js" charset="utf-8"></script>
+
+    <!-- Controllers -->
+    <script src="/app/controllers/landing.controller.js" charset="utf-8"></script>
+    <script src="/app/controllers/artistmode.controller.js" charset="utf-8"></script>
+    <script src="/app/controllers/categorymode.controller.js" charset="utf-8"></script>
+
+    <!-- Directives -->
+    <script src="/app/directives/volumeslider.directive.js" charset="utf-8"></script>
+    <!-- Services -->
+    <script src="/app/services/angularspotify.service.js" charset="utf-8"></script>
+
+
+  </head>
+  <body>
+    <div ng-view></div>
+    <footer class="footer">
+        <div style="text-align: center; padding-top: 23px;">
+            <h3>Modes de jeu</h3>
+            <div>
+                <a href="#/artistmode">Mode artiste</a>
+            </div>
+            <div class="">
+                <a href="#/categorymode">Mode categorie</a>
+            </div>
+        </div>
+    </footer>
+  </body>
+</html>

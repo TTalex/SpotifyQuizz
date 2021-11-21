@@ -5,7 +5,6 @@ app.directive('volumeslider', function() {
         },
         link: function(scope, elem, attrs) {
             var volume_input = angular.element(document.querySelector('#volume'));
-            console.log(volume_input)
             volume_input.on("change", function(evt){
                 scope.setvolume(parseFloat(evt.target.value) / 100)
             });

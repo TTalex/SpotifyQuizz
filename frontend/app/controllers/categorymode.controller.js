@@ -11,11 +11,10 @@ app.controller('CategoryModeController',
         var pausetimeout;
         var spotifyToken = $window.localStorage.getItem("spotify-token");
         var spotifyExpiration = parseInt($window.localStorage.getItem("spotify-expiration") || 0);
-        console.log(new Date(spotifyExpiration))
         if (spotifyToken && (spotifyExpiration > Date.now() + 10 * 60 * 1000)) {
             Spotify.setAuthToken(spotifyToken);
         } else {
-            $window.location.href = "/SpotifyQuizz/";
+            $window.location.href = "/";
         }
         function play_track(track) {
             $scope.track_counter += 1;

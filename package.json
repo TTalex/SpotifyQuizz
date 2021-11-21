@@ -1,0 +1,23 @@
+{
+  "name": "spotifyquizz",
+  "version": "1.0.0",
+  "description": "![SpotifyQuizz](SpotifyQuizz/assets/img/logo.png)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TTalex/SpotifyQuizz.git"
+  },
+  "author": "TTalex",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TTalex/SpotifyQuizz/issues"
+  },
+  "homepage": "https://github.com/TTalex/SpotifyQuizz#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
