@@ -11,11 +11,14 @@
                 <label for="Artiste">Artiste</label>
                 <input type="text" class="form-control" id="Artiste"  ng-model="artist">
             </div>
-            <div class="form-group col-6">
+            <div class="form-group col-5">
                 <label for="secs">Nombre de secondes</label>
                 <input type="number" class="form-control" id="secs" ng-model="sample_time" min="0" max="30">
             </div>
-
+            <div class="form-group col-1">
+                <label for="forcesearch">Force</label>
+                <input type="checkbox" id="forcesearch" ng-model="forcesearch_selected">
+            </div>
         </div>
         <div class="row col-xs-12">
             <button type="submit" class="btn-lg btn-success mx-auto" ng-click="start()">C'est parti !</button>

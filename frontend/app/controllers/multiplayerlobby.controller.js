@@ -1,6 +1,6 @@
 app.controller('MultiplayerLobbyController',
-    ['$scope', 'Spotify', '$sce', '$timeout', '$window', '$document',
-    function ($scope, Spotify, $sce, $timeout, $window, $document) {
+    ['$scope', 'Spotify', '$sce', '$timeout', '$window', '$document', 'apiservice',
+    function ($scope, Spotify, $sce, $timeout, $window, $document, apiservice) {
         var socket = io();
         $scope.lobbyId = "";
         $scope.nbPlayers = 0;
@@ -73,10 +73,7 @@ app.controller('MultiplayerLobbyController',
                 console.log("err ", data);
             });
         };
-        handle_playlist_tracks = function (data) {
-            var tracks = data.data.items.map(function (elt) {
-                return elt.track;
-            });
+        handle_playlist_tracks = function (tracks) {
             console.log(tracks);
             var filtered = tracks.filter(function (elt) {
                 return elt.preview_url;
@@ -84,18 +81,41 @@ app.controller('MultiplayerLobbyController',
             console.log(filtered);
             $scope.filtered_tracks = $scope.filtered_tracks.concat(filtered);
         };
+        function forcesearch(tracks) {
+            apiservice.forcesearch(tracks)
+            .success((data) => {
+                handle_playlist_tracks(data.tracks)
+            })
+        }
         handle_err = function (data){
             console.log("err ", data);
         };
+        function handle_playlist_tracks_result(data, moredata) {
+            var tracks = data.data.items.map(function (elt) {
+                return elt.track;
+            });
+            if (moredata) {
+                var moretracks = moredata.data.items.map(function (elt) {
+                    return elt.track;
+                });
+                tracks = tracks.concat(moretracks);
+            }
+            if ($scope.forcesearch_selected) {
+                forcesearch(tracks);
+            } else {
+                handle_playlist_tracks(tracks);
+            }
+        }
         $scope.selectplaylist = function(p) {
             $scope.selected_playlist = p.id;
             $scope.filtered_tracks = [];
             Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, market: "FR" }).then(function (data) {
-                handle_playlist_tracks(data);
                 if (data.data.total > 50) {
-                    Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, offset: 50, market: "FR" }).then(function (data) {
-                        handle_playlist_tracks(data);
+                    Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, offset: 50, market: "FR" }).then(function (moredata) {
+                        handle_playlist_tracks_result(data, moredata);
                     }, handle_err);
+                } else {
+                    handle_playlist_tracks_result(data);
                 }
             }, handle_err);
         };
@@ -107,6 +127,7 @@ app.controller('MultiplayerLobbyController',
                 $scope.track_counter = 0;
                 $scope.scores = [];
                 $scope.responses = [];
+                $scope.nbGuesses = 0;
                 for (var i = 0; i < $scope.nbPlayers; i++) {
                     $scope.responses.push([]);
                     $scope.scores.push(0);
@@ -137,7 +158,7 @@ app.controller('MultiplayerLobbyController',
             }
             return res;
         };
-        var nbGuesses = 0;
+        $scope.nbGuesses = 0;
         $scope.choose = function(track, playerId) {
             if (!$scope.tracks) {
                 // Not yet in track mode !
@@ -147,7 +168,7 @@ app.controller('MultiplayerLobbyController',
                 // Going too fast, player has already guessed !
                 return;
             }
-            nbGuesses += 1;
+            $scope.nbGuesses += 1;
             var waitime = 2000;
             var fzS = FuzzySet([$scope.random_track.id]);
             if (fzS.get(track.id, null, 0.9)) {
@@ -160,13 +181,13 @@ app.controller('MultiplayerLobbyController',
                 //waitime = 5000;
                 $scope.responses[playerId].push(false);
             }
-            if (nbGuesses == $scope.nbPlayers && $scope.track_counter < $scope.MAX_TRACKS) {
+            if ($scope.nbGuesses == $scope.nbPlayers && $scope.track_counter < $scope.MAX_TRACKS) {
                 $scope.waiting = "Chanson suivante dans " + waitime/1000 + " secondes...";
                 $timeout(function () {
                     $scope.message_success = "";
                     $scope.message_failure = "";
                     $scope.waiting = "";
-                    nbGuesses = 0;
+                    $scope.nbGuesses = 0;
                     $scope.generate_tracks();
                     $scope.$apply();
                 }, waitime);

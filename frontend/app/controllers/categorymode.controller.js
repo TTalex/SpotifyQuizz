@@ -1,6 +1,6 @@
 app.controller('CategoryModeController',
-    ['$scope', 'Spotify', '$sce', '$timeout', '$window', '$document',
-    function ($scope, Spotify, $sce, $timeout, $window, $document) {
+    ['$scope', 'Spotify', '$sce', '$timeout', '$window', '$document', 'apiservice',
+    function ($scope, Spotify, $sce, $timeout, $window, $document, apiservice) {
         $scope.sample_time = 10;
         $scope.score = 0;
         $scope.track_counter = 0;
@@ -51,10 +51,7 @@ app.controller('CategoryModeController',
                 console.log("err ", data);
             });
         };
-        handle_playlist_tracks = function (data) {
-            var tracks = data.data.items.map(function (elt) {
-                return elt.track;
-            });
+        handle_playlist_tracks = function (tracks) {
             console.log(tracks);
             var filtered = tracks.filter(function (elt) {
                 return elt.preview_url;
@@ -62,18 +59,41 @@ app.controller('CategoryModeController',
             console.log(filtered);
             $scope.filtered_tracks = $scope.filtered_tracks.concat(filtered);
         };
+        function forcesearch(tracks) {
+            apiservice.forcesearch(tracks)
+            .success((data) => {
+                handle_playlist_tracks(data.tracks)
+            })
+        }
         handle_err = function (data){
             console.log("err ", data);
         };
+        function handle_playlist_tracks_result(data, moredata) {
+            var tracks = data.data.items.map(function (elt) {
+                return elt.track;
+            });
+            if (moredata) {
+                var moretracks = moredata.data.items.map(function (elt) {
+                    return elt.track;
+                });
+                tracks = tracks.concat(moretracks);
+            }
+            if ($scope.forcesearch_selected) {
+                forcesearch(tracks);
+            } else {
+                handle_playlist_tracks(tracks);
+            }
+        }
         $scope.selectplaylist = function(p) {
             $scope.selected_playlist = p.id;
             $scope.filtered_tracks = [];
             Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, market: "FR" }).then(function (data) {
-                handle_playlist_tracks(data);
                 if (data.data.total > 50) {
-                    Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, offset: 50, market: "FR" }).then(function (data) {
-                        handle_playlist_tracks(data);
+                    Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, offset: 50, market: "FR" }).then(function (moredata) {
+                        handle_playlist_tracks_result(data, moredata);
                     }, handle_err);
+                } else {
+                    handle_playlist_tracks_result(data);
                 }
             }, handle_err);
         };

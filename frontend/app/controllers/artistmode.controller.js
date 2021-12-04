@@ -1,6 +1,6 @@
 app.controller('ArtistModeController',
-['$scope', 'Spotify', '$sce', '$timeout', '$window',
-function ($scope, Spotify, $sce, $timeout, $window) {
+['$scope', 'Spotify', '$sce', '$timeout', '$window', 'apiservice',
+function ($scope, Spotify, $sce, $timeout, $window, apiservice) {
     $scope.sample_time = 10;
     //var artist = 'Macklemore & Ryan Lewis';
     $scope.artist = 'Rage against the machine';
@@ -32,6 +32,28 @@ function ($scope, Spotify, $sce, $timeout, $window) {
         $scope.random_track = $scope.filtered_tracks[getRandomInt(0, $scope.filtered_tracks.length)];
         play_track($scope.random_track);
     }
+
+    function handle_tracks(tracks) {
+        $scope.filtered_tracks = tracks.filter(function (elt) {
+            return elt.preview_url;
+        });
+        $scope.tracks = $scope.filtered_tracks.map(function (elt) {
+            return elt.name;
+        });
+        $scope.tracks = uniq($scope.tracks);
+        if ($scope.tracks.length === 0) {
+            $scope.message_failure = "Aucune musique disponible pour cet artiste";
+        } else {
+            $scope.message_failure = "";
+            play_random_track();
+        }
+    }
+    function forcesearch(tracks) {
+        apiservice.forcesearch(tracks)
+        .success((data) => {
+            handle_tracks(data.tracks)
+        })
+    }
     $scope.start = function() {
         $scope.tries = 0;
         Spotify.search($scope.artist, 'artist').then(function (data) {
@@ -40,17 +62,10 @@ function ($scope, Spotify, $sce, $timeout, $window) {
             Spotify.getArtistTopTracks(artist_uri, 'FR').then(function(data) {
                 console.log(data);
                 var tracks = data.data.tracks;
-                $scope.filtered_tracks = tracks.filter(function (elt) {
-                    return elt.preview_url;
-                });
-                $scope.tracks = $scope.filtered_tracks.map(function (elt) {
-                    return elt.name;
-                });
-                $scope.tracks = uniq($scope.tracks);
-                if ($scope.tracks.length === 0) {
-                    $scope.message_failure = "Aucune musique disponible pour cet artiste";
+                if ($scope.forcesearch_selected) {
+                    forcesearch(tracks)
                 } else {
-                    play_random_track();
+                    handle_tracks(tracks);
                 }
             });
         }, function(data) {

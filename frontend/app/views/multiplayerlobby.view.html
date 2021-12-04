@@ -22,9 +22,13 @@
         <h1>Multijoueur</h1>
         <form>
             <div class="row col-12">
-                <div class="form-group col-12">
+                <div class="form-group col-11">
                     <label for="secs">Nombre de secondes</label>
                     <input type="number" class="form-control" id="secs" ng-model="sample_time" min="0" max="30">
+                </div>
+                <div class="form-group col-1">
+                    <label for="forcesearch">Force</label>
+                    <input type="checkbox" id="forcesearch" ng-model="forcesearch_selected">
                 </div>
 
             </div>
