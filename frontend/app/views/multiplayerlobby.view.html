@@ -9,7 +9,9 @@
         <div>
             Salle #{{lobbyId}}, {{nbPlayers}} joueurs, scanne le QR code pour rejoindre la partie.
         </div>
-        <div id="qrcode" style="margin: 10px"></div>
+        <a ng-href="{{remoteurl}}">
+            <div id="qrcode" style="margin: 10px"></div>
+        </a>
         <div ng-show="!nbPlayers">
             En attente de joueurs...
         </div>
