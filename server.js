@@ -74,7 +74,11 @@ async function hackFetchPreviewUrl(track) {
     let embedUrl = "https://open.spotify.com/embed/track/" + track.id;
     let response = await fetch(embedUrl);
     let text = await response.text();
-    let previewUrl = await decodeURIComponent(text.match(/preview_url%22%3A%22(.*)%3Fcid/)[1]);
+    let matched = text.match(/preview_url%22%3A%22(.*)%3Fcid/);
+    let previewUrl = "";
+    if (matched && matched.length > 0) {
+        previewUrl = decodeURIComponent(matched[1]);
+    }
     // Save in db for next time !
     saveInDb(track.id, previewUrl);
     return previewUrl;
