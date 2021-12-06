@@ -105,6 +105,7 @@ function ($scope, Spotify, $sce, $timeout, $window, apiservice) {
     $scope.volume = 0.5;
     $scope.setVolume = function(value) {
         audio.volume = value;
+        $scope.volume = value;
     }
     //
     // $timeout(function () {
