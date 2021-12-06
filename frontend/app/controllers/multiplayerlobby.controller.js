@@ -6,16 +6,18 @@ app.controller('MultiplayerLobbyController',
         $scope.nbPlayers = 0;
         socket.emit("createLobby", (response) => {
             $scope.lobbyId = response.lobbyId;
+            $scope.remoteurl = "http://" + $window.location.host + "/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers;
             $scope.$apply();
             var qrcode = new QRCode(
                 document.getElementById("qrcode"),
-                $window.location.host + "/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers
+                $scope.remoteurl
             );
             socket.on("playerJoin", (data) => {
                 console.log("playerJoin", data.playerId);
                 $scope.nbPlayers += 1;
+                $scope.remoteurl = "http://" + $window.location.host + "/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers;
                 $scope.$apply();
-                qrcode.makeCode($window.location.host + "/#/multiplayerremote?lobbyId=" + $scope.lobbyId + "&playerId=" + $scope.nbPlayers);
+                qrcode.makeCode($scope.remoteurl);
             });
             socket.on("playerGuess", (data) => {
                 console.log("playerGuess", data.playerId, data.guessId);
