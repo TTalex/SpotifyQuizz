@@ -2,8 +2,7 @@ app.controller('ArtistModeController',
 ['$scope', 'Spotify', '$sce', '$timeout', '$window', 'apiservice',
 function ($scope, Spotify, $sce, $timeout, $window, apiservice) {
     $scope.sample_time = 10;
-    //var artist = 'Macklemore & Ryan Lewis';
-    $scope.artist = 'Rage against the machine';
+    $scope.artist = '';
     var audio = document.getElementById("audioelement");
     var pausetimeout;
     var spotifyToken = $window.localStorage.getItem("spotify-token");
@@ -13,6 +12,10 @@ function ($scope, Spotify, $sce, $timeout, $window, apiservice) {
     } else {
         $window.location.href = "/";
     }
+    Spotify.getUserTopArtists().then(function (data) {
+        var artists = data.data.items.map(function(artist) { return artist.name; });
+        $scope.artist = artists[getRandomInt(0, artists.length)];
+    });
     function play_track(track) {
         console.log(track);
         $scope.preview_url = $sce.trustAsResourceUrl(track.preview_url);

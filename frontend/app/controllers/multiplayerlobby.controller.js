@@ -63,17 +63,36 @@ app.controller('MultiplayerLobbyController',
         $scope.start = function() {
             Spotify.getCategories({ country: 'FR' }).then(function (data) {
                 $scope.categories = data.data.categories.items;
+                $scope.categories.push({
+                    name: "MES PLAYLISTS",
+                    id: "MES PLAYLISTS"
+                })
             }, function(data) {
                 console.log("err ", data);
             });
         };
         $scope.selectcategory = function(c) {
             $scope.selected_category = c.id;
-            Spotify.getCategoryPlaylists(c.id, {"country": "FR"}).then(function (data) {
-                $scope.playlists = data.data.playlists.items;
-            }, function(data) {
-                console.log("err ", data);
-            });
+            if (c.name == "MES PLAYLISTS") {
+                Spotify.getCurrentUser().then(function (data) {
+                    console.log("getCurrentUser data", data)
+                    Spotify.getUserPlaylists(data.data.id).then(function(data) {
+                        console.log("getUserPlaylists data", data)
+                        $scope.playlists = data.data.items;
+                        $scope.playlists.push({
+                            name: "MES TOP TRACKS",
+                            id: "MES TOP TRACKS"
+                        })
+                    })
+                })
+            } else {
+                $scope.selected_category = c.id;
+                Spotify.getCategoryPlaylists(c.id, {"country": "FR"}).then(function (data) {
+                    $scope.playlists = data.data.playlists.items;
+                }, function(data) {
+                    console.log("err ", data);
+                });
+            }
         };
         handle_playlist_tracks = function (tracks) {
             console.log(tracks);
@@ -111,6 +130,18 @@ app.controller('MultiplayerLobbyController',
         $scope.selectplaylist = function(p) {
             $scope.selected_playlist = p.id;
             $scope.filtered_tracks = [];
+            if (p.id == "MES TOP TRACKS") {
+                Spotify.getUserTopTracks().then(function (data) {
+                    console.log("getUserTopTracks", data);
+                    var tracks = data.data.items;
+                    if ($scope.forcesearch_selected) {
+                        forcesearch(tracks);
+                    } else {
+                        handle_playlist_tracks(tracks);
+                    }
+                });
+                return;
+            }
             Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, market: "FR" }).then(function (data) {
                 if (data.data.total > 50) {
                     Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, offset: 50, market: "FR" }).then(function (moredata) {
