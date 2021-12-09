@@ -1,11 +1,8 @@
-app.controller('CategoryModeController',
+app.controller('StreaksModeController',
     ['$scope', 'Spotify', '$sce', '$timeout', '$window', '$document', 'apiservice',
     function ($scope, Spotify, $sce, $timeout, $window, $document, apiservice) {
-        $scope.sample_time = 10;
+        $scope.sample_time = 1;
         $scope.score = 0;
-        $scope.track_counter = 0;
-        $scope.MAX_TRACKS = 10;
-        $scope.responses = [];
         var timer = 0;
         var audio = document.getElementById("audioelement");
         var pausetimeout;
@@ -85,7 +82,9 @@ app.controller('CategoryModeController',
             }
         }
         $scope.selectplaylist = function(p) {
+            $scope.message_failure = "";
             $scope.selected_playlist = p.id;
+            load_streak_scores();
             $scope.filtered_tracks = [];
             Spotify.getPlaylistTracks(p.owner.id, p.id, { limit: 50, market: "FR" }).then(function (data) {
                 if (data.data.total > 50) {
@@ -102,11 +101,10 @@ app.controller('CategoryModeController',
             var number_of_tracks = 4;
             var tmpfiltered = $scope.filtered_tracks.slice();
             if (button) {
-                $scope.track_counter = 0;
                 $scope.score = 0;
-                $scope.responses = [];
                 $scope.message_success = "";
                 $scope.message_failure = "";
+                $scope.scoreSaved = false;
             }
             for (var i = 0; i < number_of_tracks; i++) {
                 tracks[i] = tmpfiltered.splice(getRandomInt(0, tmpfiltered.length), 1)[0];
@@ -114,17 +112,6 @@ app.controller('CategoryModeController',
             $scope.tracks = tracks;
             $scope.random_track = tracks[getRandomInt(0, number_of_tracks)];
             play_track($scope.random_track);
-        };
-        add_score = function() {
-            var response_time = (Date.now() - timer) / 1000;
-            var res;
-            if (response_time > $scope.sample_time) {
-                res = 1;
-            } else {
-                res =  ($scope.sample_time - response_time)/ $scope.sample_time * 15;
-            }
-            $scope.score += res;
-            return res;
         };
         $document.bind('keyup', function (e) {
             switch (e.keyCode) {
@@ -157,15 +144,9 @@ app.controller('CategoryModeController',
             var waitime = 2000;
             var fzS = FuzzySet([$scope.random_track.id]);
             if (fzS.get(track.id, null, 0.9)) {
-                var sc = add_score();
-                $scope.message_success = "Bravo ! +" + sc + " points.";
-                $scope.responses.push(sc);
-            } else {
-                $scope.message_failure = "Perdu ! La bonne réponse était " + $scope.random_track.artists[0].name + " - " + $scope.random_track.name;
-                waitime = 5000;
-                $scope.responses.push(false);
-            }
-            if ($scope.track_counter < $scope.MAX_TRACKS) {
+                $scope.message_success = "Bravo !";
+                $scope.score += 1;
+
                 $scope.waiting = "Chanson suivante dans " + waitime/1000 + " secondes...";
                 $timeout(function () {
                     $scope.message_success = "";
@@ -173,8 +154,32 @@ app.controller('CategoryModeController',
                     $scope.waiting = "";
                     $scope.generate_tracks();
                 }, waitime);
+            } else {
+                $scope.message_failure = "Perdu ! La bonne réponse était " + $scope.random_track.artists[0].name + " - " + $scope.random_track.name;
             }
         };
+        function load_streak_scores() {
+            apiservice.loadstreakscores($scope.selected_playlist)
+            .success((data) => {
+                console.log("data.streak_scores", data.streak_scores);
+                $scope.streak_scores = data.streak_scores;
+            });
+        }
+        $scope.save_score = function() {
+            if ($scope.scoreSaved) {
+                // player has already saved his score
+                return;
+            }
+            if (!$scope.player_name) {
+                $scope.message_failure = "Un nom est nécessaire";
+                return;
+            }
+            apiservice.savestreakscore($scope.selected_playlist, $scope.player_name, $scope.score)
+            .success((data) => {
+                $scope.scoreSaved = true;
+                load_streak_scores();
+            })
+        }
         $scope.volume = 0.5;
         $scope.setVolume = function(value) {
             audio.volume = value;

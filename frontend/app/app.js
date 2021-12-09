@@ -15,6 +15,10 @@ app.config(function ($locationProvider, $routeProvider) {
         controller: 'CategoryModeController',
         templateUrl: 'app/views/categorymode.view.html'
     })
+    .when('/streaksmode', {
+        controller: 'StreaksModeController',
+        templateUrl: 'app/views/streaksmode.view.html'
+    })
     .when('/multiplayerlobby', {
         controller: 'MultiplayerLobbyController',
         templateUrl: 'app/views/multiplayerlobby.view.html'

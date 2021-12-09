@@ -15,6 +15,9 @@ app.use(bodyParser.json({limit: '50mb'}));
 var db = new sqlite3.Database('databases/trackspreview.db');
 db.run("CREATE TABLE TracksPreviews (id TEXT PRIMARY KEY, previewUrl text)", (err) => {})
 
+var db_scores = new sqlite3.Database('databases/scores.db');
+db_scores.run("CREATE TABLE StreakScores (playlistId TEXT, playerName text, score int)", (err) => {})
+
 let lobbyIndex = 1;
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -93,6 +96,37 @@ app.post('/api/forcesearch', async (req, res) => {
     }
     res.json({
         tracks: tracks
+    });
+});
+function loadStreakScoresFromDb(playlistId) {
+    return new Promise(resolve => {
+        db_scores.all("SELECT * from StreakScores WHERE playlistId = ? ORDER BY score desc LIMIT 5", playlistId, (err, data) => {
+            resolve(data);
+        })
+    });
+}
+function saveStreakScoreInDb(playlistId, playerName, score) {
+    return new Promise(resolve => {
+        db_scores.run("INSERT INTO StreakScores VALUES (?, ?, ?)", [playlistId, playerName, score], err => {
+            if (err) {
+                console.log("Insert error", err)
+            }
+            resolve(err);
+        });
+    });
+}
+app.post('/api/savestreakscore/', async (req, res) => {
+    let playlist_id = req.body.playlist_id;
+    let err = await saveStreakScoreInDb(req.body.playlist_id, req.body.player_name, req.body.score);
+    res.json({
+        err: err
+    });
+});
+app.get('/api/loadstreakscores/:playlist_id', async (req, res) => {
+    let playlistId = req.params.playlist_id;
+    let streakScores = await loadStreakScoresFromDb(playlistId);
+    res.json({
+        streak_scores: streakScores
     });
 });
 server.listen(8000, () => {

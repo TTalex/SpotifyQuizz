@@ -1,0 +1,92 @@
+<audio id="audioelement" ng-src="{{preview_url}}">
+</audio>
+<div class="row col-12" style="margin-top: 50px;">
+    <img class="mx-auto" src="/assets/img/logo.png" style="height: 150px;"/>
+</div>
+<div class="container" style="min-height: 500px;">
+    <h1>Mode Serie</h1>
+    <form>
+        <div class="row col-12">
+            <div class="col-11">
+                Le mode de jeu pour les boss avec une seule seconde pour trouver
+                <br/>Chaque bonne réponse successive fait gagner un point
+                <br/>Tente de marquer le meilleur score par playlist !
+            </div>
+            <div class="form-group col-1">
+                <label for="forcesearch">Force</label>
+                <input type="checkbox" id="forcesearch" ng-model="forcesearch_selected">
+            </div>
+        </div>
+        <div class="row col-xs-12" ng-hide="categories">
+            <button type="submit" class="btn-lg btn-success mx-auto" ng-click="start()">C'est parti !</button>
+        </div>
+    </form>
+    <div ng-show="categories" class="col-12" style="margin-top: 10px">
+        <h3>Categories</h3>
+        <button ng-repeat="c in categories" class="btn-sm btn-secondary mx-auto" ng-class="{'btn-info': selected_category == c.id}" type="button" name="button" ng-click="selectcategory(c)">{{c.name}}</button>
+    </div>
+    <div ng-show="playlists" class="col-12" style="margin-top: 10px">
+        <h3>Playlists</h3>
+        <button ng-repeat="p in playlists" class="btn-sm btn-secondary mx-auto" ng-class="{'btn-info': selected_playlist == p.id}" type="button" name="button" ng-click="selectplaylist(p)">{{p.name}}</button>
+    </div>
+    <div class="col-12 row">
+        <div class="col-6">
+            <div ng-show="filtered_tracks" class="col-12" style="margin-top: 10px">
+                <div>Cette playliste contient {{filtered_tracks.length}} musiques.</div>
+                <button class="btn-lg btn-success" type="button" name="button" ng-click="generate_tracks(true)">C'est parti !</button>
+            </div>
+            <div ng-show="tracks" class="col-12" style="margin-top: 10px; margin-bottom: 10px;">
+                <h3>Quelle musique ?</h3>
+                <button class="btn-sm btn-success" ng-repeat="t in tracks track by $index" type="button" name="button" ng-click="choose(t)" style="display:block">[{{$index + 1}}] {{t.artists[0].name}} - {{t.name}}</button>
+            </div>
+        </div>
+        <div class="col-6" ng-show="filtered_tracks" style="margin-top: 10px;">
+            Meilleurs scores pour cette playlist (TOP 5):
+            <div ng-repeat="scoreEntry in streak_scores track by $index">
+                {{$index + 1}}. {{scoreEntry.playerName}} - {{scoreEntry.score}} points
+            </div>
+            <div ng-show="!streak_scores.length">
+                Pas encore de score enregistré sur cette playlist
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="filtered_tracks" class="col-12" style="height: 250px">
+        <div class="alert alert-success" ng-show="message_success">{{message_success}}</div>
+        <div class="alert alert-info" ng-show="waiting">{{waiting}}</div>
+        <div ng-show="tracks && !message_failure">Score: {{score}}</div>
+        <div class="col-12" ng-show="message_failure">
+            <div class="alert alert-danger">{{message_failure}}</div>
+            <div class="">
+                Score final: {{score}} points
+            </div>
+            <form>
+                <div class="row col-12">
+                    <div class="form-group col-6">
+                        <label for="playername">Nom</label>
+                        <input type="text" class="form-control" id="playername" ng-model="player_name">
+                    </div>
+                    <div class="form-group col-6">
+                        <button type="submit" class="btn mx-auto" ng-class="{'btn-secondary': scoreSaved, 'btn-success': !scoreSaved}" ng-click="save_score()" style="margin-top: 37px">Enregister le score</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div class="col-12">
+    <volumeslider setvolume="setVolume"></volumeslider>
+</div>
+
+<footer class="footer">
+    <div style="text-align: center; padding-top: 23px;">
+        <h3>Modes de jeu</h3>
+        <div>
+            <a href="#/artistmode">Mode artiste</a>
+        </div>
+        <div class="">
+            <a href="#/categorymode">Mode categorie</a>
+        </div>
+    </div>
+</footer>
